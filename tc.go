@@ -121,30 +121,30 @@ func (p normalP) parseBuffer(buf []byte) []byte {
 	case bytes.HasPrefix(trimmedBuf, question):
 		// ?
 		annotatedSlice = annotateWithColor(buf, cyan)
-	case bytes.Contains(trimmedBuf, underscoreTest):
-		// For lines containing '_test.go' like
-		//
-		//		TestMockSucceed: mock_test.go:6: Checking if mocking succeed works
-		//
-		// we transform to
-		//
-		//		mock_test.go:6:
-		//			Checking if mocking succeed works
-		//
-		var edited bytes.Buffer
-		//    TestMockSucceed: mock_test.go:6: Checking if mocking succeed works
-		//                     ^
-		//					   cut everything before this
-		//
-		colons := search(trimmedBuf, colon, 1)
-		if len(colons) < 1 {
-			panic("testcolor: unexpected nil from search function")
-		}
+	// case bytes.Contains(trimmedBuf, underscoreTest):
+	// 	// For lines containing '_test.go' like
+	// 	//
+	// 	//		TestMockSucceed: mock_test.go:6: Checking if mocking succeed works
+	// 	//
+	// 	// we transform to
+	// 	//
+	// 	//		mock_test.go:6:
+	// 	//			Checking if mocking succeed works
+	// 	//
+	// 	var edited bytes.Buffer
+	// 	//    TestMockSucceed: mock_test.go:6: Checking if mocking succeed works
+	// 	//                     ^
+	// 	//					   cut everything before this
+	// 	//
+	// 	colons := search(trimmedBuf, colon, 1)
+	// 	if len(colons) < 1 {
+	// 		panic("testcolor: unexpected nil from search function")
+	// 	}
 
-		edited.Write(tenSpaces)
-		edited.Write(annotateWithColor(trimmedBuf[colons[0]+2:], grey))
+	// 	edited.Write(tenSpaces)
+	// 	edited.Write(annotateWithColor(trimmedBuf[colons[0]+2:], grey))
 
-		annotatedSlice = edited.Bytes()
+	// 	annotatedSlice = edited.Bytes()
 	default:
 		annotatedSlice = buf
 	}
